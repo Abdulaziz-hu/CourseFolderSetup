@@ -15,8 +15,10 @@ fi
 
 # Create Folders
 folders=(
-    "01-admin" "02-resources/slides" "02-resources/content" "02-resources/whiteboard"
-    "03-notes/class_notes" "03-notes/reviews" "04-assessments/assignments" "04-assessments/projects"
+    "01-admin" 
+    "02-resources/slides" "02-resources/content" "02-resources/whiteboard"
+    "03-notes/class_notes" "03-notes/reviews"
+    "04-assessments/assignments" "04-assessments/projects"
     "05-exams/current/final" "05-exams/current/mid_term" "05-exams/current/other" "05-exams/current/quiz"
     "05-exams/olds/final" "05-exams/olds/mid_term" "05-exams/olds/other" "05-exams/olds/quiz"
     "archive"
