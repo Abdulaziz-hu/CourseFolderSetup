@@ -22,5 +22,5 @@
     ```
 3. Build the app:
     ```bash
-    pyinstaller --onedir --noconsole --name="CourseFolderSetup-v1.1.0" app.py
+    pyinstaller --onefile --noconsole --name="CourseFolderSetup-v1.1.0" app.py
     ```
