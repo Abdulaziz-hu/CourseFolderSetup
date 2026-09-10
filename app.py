@@ -31,50 +31,42 @@ class CourseSetupApp:
     def __init__(self, root):
         self.root = root
         self.root.title("File Structure Setup v1.1.0")
-        self.root.geometry("640x610")
-        self.root.minsize(640, 610)
-
-        try:
-            if os.name == "nt":
-                import ctypes
-                ctypes.windll.shcore.SetProcessDpiAwareness(2)
-            self.root.tk.call('tk', 'scaling', 1.3)
-        except Exception:
-            pass
+        self.root.geometry("1000x1000")
+        self.root.minsize(1000, 1000)
 
         self.style = ttk.Style()
         if "clam" in self.style.theme_names():
             self.style.theme_use("clam")
 
-        default_font = ("Segoe UI", 10 if os.name == "nt" else 11)
+        default_font = ("Segoe UI", 11 if os.name == "nt" else 11)
         self.style.configure(".", font=default_font)
 
-        main_container = ttk.Frame(root, padding=12)
+        main_container = ttk.Frame(root, padding=16)
         main_container.pack(fill=tk.BOTH, expand=True)
 
         title_label = ttk.Label(
             main_container, 
             text="Course Folder Structure Creator", 
-            font=("Segoe UI", 13, "bold"), 
+            font=("Segoe UI", 14, "bold"), 
             foreground="#0078d7"
         )
-        title_label.pack(anchor="w", pady=(0, 8))
+        title_label.pack(anchor="w", pady=(0, 12))
 
-        loc_frame = ttk.LabelFrame(main_container, text="Setup Locations", padding=10)
-        loc_frame.pack(fill=tk.BOTH, expand=True, pady=(0, 8))
+        loc_frame = ttk.LabelFrame(main_container, text="Setup Locations", padding=12)
+        loc_frame.pack(fill=tk.BOTH, expand=True, pady=(0, 12))
 
-        self.loc_listbox = tk.Listbox(loc_frame, height=4, selectmode=tk.SINGLE, bd=1, relief="solid", exportselection=False)
-        self.loc_listbox.pack(side=tk.LEFT, fill=tk.BOTH, expand=True, padx=(0, 8))
+        self.loc_listbox = tk.Listbox(loc_frame, height=4, selectmode=tk.SINGLE, bd=1, relief="solid", exportselection=False, font=default_font)
+        self.loc_listbox.pack(side=tk.LEFT, fill=tk.BOTH, expand=True, padx=(0, 12))
 
         loc_btn_frame = ttk.Frame(loc_frame)
         loc_btn_frame.pack(side=tk.RIGHT, fill=tk.Y)
 
-        ttk.Button(loc_btn_frame, text="Add Location", command=self.add_location, width=12).pack(fill=tk.X, pady=2)
-        ttk.Button(loc_btn_frame, text="Remove", command=self.remove_location, width=12).pack(fill=tk.X, pady=2)
-        ttk.Button(loc_btn_frame, text="Clear All", command=self.clear_locations, width=12).pack(fill=tk.X, pady=2)
+        ttk.Button(loc_btn_frame, text="Add Location", command=self.add_location, width=14).pack(fill=tk.X, pady=4)
+        ttk.Button(loc_btn_frame, text="Remove", command=self.remove_location, width=14).pack(fill=tk.X, pady=4)
+        ttk.Button(loc_btn_frame, text="Clear All", command=self.clear_locations, width=14).pack(fill=tk.X, pady=4)
 
-        course_frame = ttk.LabelFrame(main_container, text="Course Names (Optional - leave empty to create directly)", padding=10)
-        course_frame.pack(fill=tk.BOTH, expand=True, pady=(0, 8))
+        course_frame = ttk.LabelFrame(main_container, text="Course Names (Optional - leave empty to create directly)", padding=12)
+        course_frame.pack(fill=tk.BOTH, expand=True, pady=(0, 12))
 
         self.course_text = tk.Text(course_frame, height=3, fg="gray", font=default_font, bd=1, relief="solid")
         self.course_text.pack(fill=tk.BOTH, expand=True)
@@ -83,30 +75,32 @@ class CourseSetupApp:
         self.course_text.bind("<FocusIn>", self.clear_placeholder)
         self.course_text.bind("<FocusOut>", self.restore_placeholder)
 
-        opt_frame = ttk.LabelFrame(main_container, text="Additional Options", padding=10)
-        opt_frame.pack(fill=tk.X, pady=(0, 8))
+        opt_frame = ttk.LabelFrame(main_container, text="Additional Options", padding=12)
+        opt_frame.pack(fill=tk.X, pady=(0, 12))
+        opt_frame.columnconfigure(0, weight=1)
+        opt_frame.columnconfigure(1, weight=1)
 
         self.readme_var = tk.BooleanVar(value=False)
         self.gitignore_var = tk.BooleanVar(value=False)
         self.log_var = tk.BooleanVar(value=False)
         self.open_folder_var = tk.BooleanVar(value=False)
 
-        ttk.Checkbutton(opt_frame, text="Create README.md in each folder", variable=self.readme_var).grid(row=0, column=0, sticky="w", padx=5, pady=3)
-        ttk.Checkbutton(opt_frame, text="Generate creation log", variable=self.log_var).grid(row=0, column=1, sticky="w", padx=25, pady=3)
-        ttk.Checkbutton(opt_frame, text="Create .gitignore file", variable=self.gitignore_var).grid(row=1, column=0, sticky="w", padx=5, pady=3)
-        ttk.Checkbutton(opt_frame, text="Open folder when finished", variable=self.open_folder_var).grid(row=1, column=1, sticky="w", padx=25, pady=3)
+        ttk.Checkbutton(opt_frame, text="Create README.md in each folder", variable=self.readme_var).grid(row=0, column=0, sticky="w", padx=6, pady=6)
+        ttk.Checkbutton(opt_frame, text="Generate creation log", variable=self.log_var).grid(row=0, column=1, sticky="w", padx=10, pady=6)
+        ttk.Checkbutton(opt_frame, text="Create .gitignore file", variable=self.gitignore_var).grid(row=1, column=0, sticky="w", padx=6, pady=6)
+        ttk.Checkbutton(opt_frame, text="Open folder when finished", variable=self.open_folder_var).grid(row=1, column=1, sticky="w", padx=10, pady=6)
 
         self.progress = ttk.Progressbar(main_container, orient="horizontal", mode="determinate")
-        self.progress.pack(fill=tk.X, pady=(4, 10))
+        self.progress.pack(fill=tk.X, pady=(4, 14))
 
         btn_frame = ttk.Frame(main_container)
         btn_frame.pack(fill=tk.X, pady=(0, 2))
 
-        cancel_btn = ttk.Button(btn_frame, text="Cancel", command=root.quit, width=10)
+        cancel_btn = ttk.Button(btn_frame, text="Cancel", command=root.quit, width=12)
         cancel_btn.pack(side=tk.RIGHT, padx=2)
 
-        create_btn = ttk.Button(btn_frame, text="Create", command=self.create_structure, width=10)
-        create_btn.pack(side=tk.RIGHT, padx=5)
+        create_btn = ttk.Button(btn_frame, text="Create", command=self.create_structure, width=12)
+        create_btn.pack(side=tk.RIGHT, padx=8)
 
     def clear_placeholder(self, event):
         if self.course_text.get("1.0", tk.END).strip() == self.placeholder:
@@ -198,7 +192,6 @@ class CourseSetupApp:
                     self.root.update_idletasks()
 
                 for folder in FOLDERS:
-                    # Fix nested paths (like 02-resources/slides) safely using os.path.split or normpath
                     parts = folder.split("/")
                     full_path = os.path.join(base_path, *parts)
                     try:
@@ -231,7 +224,6 @@ class CourseSetupApp:
             msg += f"\n\nLog saved to:\n{log_path}"
         messagebox.showinfo("Creation Complete", msg)
 
-        # Open the main parent folder rather than the last nested child subfolder
         if open_folder and first_location_to_open and os.path.exists(first_location_to_open):
             self.open_path_in_native_explorer(first_location_to_open)
 
@@ -283,6 +275,16 @@ class CourseSetupApp:
             f.write(content)
 
 if __name__ == "__main__":
+    if os.name == "nt":
+        try:
+            import ctypes
+            ctypes.windll.shcore.SetProcessDpiAwareness(2)
+        except Exception:
+            try:
+                ctypes.windll.user32.SetProcessDPIAware()
+            except Exception:
+                pass
+
     root = tk.Tk()
     app = CourseSetupApp(root)
     root.mainloop()
